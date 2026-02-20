@@ -366,7 +366,14 @@ function App() {
     const html = renderPrintHtml(generated)
     printWindow.document.write(html)
     printWindow.document.close()
-    printWindow.focus()
+    const triggerPrint = () => {
+      printWindow.focus()
+      printWindow.print()
+    }
+
+    // Run once content is ready; fallback covers browsers that do not fire onload reliably here.
+    printWindow.onload = triggerPrint
+    window.setTimeout(triggerPrint, 250)
   }
 
   function downloadPdf() {
@@ -758,13 +765,10 @@ function renderPrintHtml(label: LabelSnapshot) {
     .t13 { font-size: ${layout.bodyFont}; overflow-wrap: anywhere; }
     .foot { margin-top: 8px; display: flex; justify-content: space-between; font-size: ${layout.footerFont}; color: #475569; }
 
-    @media print {
-      .print-btn { display: none; }
-    }
+    @media print { .print-btn { display: none; } }
   </style>
 </head>
 <body>
-  <button class="print-btn" onclick="window.print()" style="position: fixed; right: 12px; top: 12px; padding: 8px 14px; border: 0; border-radius: 8px; background: #2563eb; color: white;">Imprimir</button>
   <div class="page">
     ${label.format !== '4x6' && label.showCutGuides ? '<div class="guides"></div>' : ''}
     <div class="sheet">
