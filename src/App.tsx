@@ -357,23 +357,45 @@ function App() {
 
   function printLabel() {
     if (!generated) return
-    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=900')
-    if (!printWindow) {
+    const html = renderPrintHtml(generated)
+    const iframe = document.createElement('iframe')
+    iframe.style.position = 'fixed'
+    iframe.style.right = '0'
+    iframe.style.bottom = '0'
+    iframe.style.width = '0'
+    iframe.style.height = '0'
+    iframe.style.border = '0'
+    iframe.setAttribute('aria-hidden', 'true')
+
+    const cleanup = () => {
+      window.setTimeout(() => {
+        iframe.remove()
+      }, 400)
+    }
+
+    iframe.onload = () => {
+      const frameWindow = iframe.contentWindow
+      if (!frameWindow) {
+        setToast('No se pudo abrir la vista de impresión.')
+        cleanup()
+        return
+      }
+
+      frameWindow.focus()
+      frameWindow.print()
+      cleanup()
+    }
+
+    document.body.appendChild(iframe)
+    const frameDoc = iframe.contentDocument
+    if (!frameDoc) {
       setToast('No se pudo abrir la vista de impresión.')
+      cleanup()
       return
     }
-
-    const html = renderPrintHtml(generated)
-    printWindow.document.write(html)
-    printWindow.document.close()
-    const triggerPrint = () => {
-      printWindow.focus()
-      printWindow.print()
-    }
-
-    // Run once content is ready; fallback covers browsers that do not fire onload reliably here.
-    printWindow.onload = triggerPrint
-    window.setTimeout(triggerPrint, 250)
+    frameDoc.open()
+    frameDoc.write(html)
+    frameDoc.close()
   }
 
   function downloadPdf() {
