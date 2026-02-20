@@ -339,6 +339,22 @@ function App() {
     setToast('Etiqueta cargada desde historial')
   }
 
+  function deleteHistoryItem(id: string) {
+    setHistory((current) => current.filter((item) => item.id !== id))
+    if (generated?.id === id) {
+      setGenerated(null)
+    }
+    setToast('Etiqueta eliminada del historial')
+  }
+
+  function clearHistory() {
+    if (history.length === 0) return
+    const allow = window.confirm('¿Quieres borrar el historial de etiquetas?')
+    if (!allow) return
+    setHistory([])
+    setToast('Historial borrado')
+  }
+
   function printLabel() {
     if (!generated) return
     const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=900,height=900')
@@ -399,12 +415,12 @@ function App() {
                 ))}
               </select>
 
-              <div className="mt-4 grid grid-cols-2 gap-2 text-xs sm:grid-cols-5">
-                <button type="button" className="btn-secondary" onClick={openCreateSender}>Crear</button>
-                <button type="button" className="btn-secondary" onClick={openEditSender} disabled={!selectedSender}>Editar</button>
-                <button type="button" className="btn-secondary" onClick={duplicateSender} disabled={!selectedSender}>Duplicar</button>
-                <button type="button" className="btn-secondary" onClick={deleteSender} disabled={!selectedSender}>Eliminar</button>
-                <button type="button" className="btn-secondary" onClick={setDefaultSender} disabled={!selectedSender}>Predeterminar</button>
+              <div className="sender-actions mt-4">
+                <button type="button" className="btn-secondary sender-action" onClick={openCreateSender}>Crear</button>
+                <button type="button" className="btn-secondary sender-action" onClick={openEditSender} disabled={!selectedSender}>Editar</button>
+                <button type="button" className="btn-secondary sender-action" onClick={duplicateSender} disabled={!selectedSender}>Duplicar</button>
+                <button type="button" className="btn-secondary sender-action" onClick={deleteSender} disabled={!selectedSender}>Eliminar</button>
+                <button type="button" className="btn-secondary sender-action sender-action-wide" onClick={setDefaultSender} disabled={!selectedSender}>Predeterminar</button>
               </div>
 
               {selectedSender && (
@@ -537,7 +553,10 @@ function App() {
             </article>
 
             <article className="rounded-2xl border border-app-border bg-app-surface p-5 shadow-soft">
-              <h2 className="font-title text-sm font-extrabold tracking-[0.18em] text-slate-700">HISTORIAL</h2>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="font-title text-sm font-extrabold tracking-[0.18em] text-slate-700">HISTORIAL</h2>
+                <button type="button" className="btn-secondary" onClick={clearHistory} disabled={history.length === 0}>Borrar historial</button>
+              </div>
               {history.length === 0 ? (
                 <p className="mt-3 text-sm text-slate-600">Aún no hay etiquetas recientes.</p>
               ) : (
@@ -548,7 +567,10 @@ function App() {
                         <p className="font-semibold text-slate-800">{item.recipient.consignee}</p>
                         <p className="text-xs text-slate-600">{item.recipient.city} · {formatLabel[item.format]}</p>
                       </div>
-                      <button type="button" className="btn-secondary" onClick={() => repeatFromHistory(item)}>Repetir</button>
+                      <div className="flex items-center gap-2">
+                        <button type="button" className="btn-secondary" onClick={() => repeatFromHistory(item)}>Repetir</button>
+                        <button type="button" className="btn-secondary" onClick={() => deleteHistoryItem(item.id)}>Eliminar</button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -629,7 +651,7 @@ function LabelPreview({ label }: { label: LabelSnapshot }) {
     <div className="preview-wrap">
       <div
         key={`${label.format}-${label.marginMode}-${label.showCutGuides}`}
-        className="preview-canvas"
+        className={`preview-canvas preview-canvas-${label.format}`}
         style={{ width: `${config.pageWidthIn}in`, height: `${config.pageHeightIn}in` }}
       >
         {label.format !== '4x6' && label.showCutGuides && (
@@ -647,28 +669,32 @@ function LabelPreview({ label }: { label: LabelSnapshot }) {
 }
 
 function LabelContent({ label, compact }: { label: LabelSnapshot; compact: boolean }) {
+  const layout = getLabelLayout(label.format)
+
   return (
-    <div className={`h-full w-full ${compact ? 'p-4' : 'p-[0.22in]'} text-[#0f172a]`}>
-      <section className="grid grid-cols-2 gap-3 border-b border-slate-300 pb-2">
-        <div>
-          <p className="text-[10px] font-extrabold tracking-[0.12em]">REMITE</p>
-          <p className="mt-1 text-[12px] font-semibold">{label.sender.name}</p>
-          <p className="text-[11px]">{label.sender.address1}</p>
-          {label.sender.address2 && <p className="text-[11px]">{label.sender.address2}</p>}
-          <p className="text-[11px]">{label.sender.stateCountry}</p>
-          <p className="text-[11px]">{label.sender.phone}</p>
+    <div className="h-full w-full text-[#0f172a]" style={{ padding: compact ? '1rem' : layout.padding }}>
+      <section className="grid border-b border-slate-300 pb-2" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)', gap: layout.gap }}>
+        <div className="min-w-0">
+          <p className="label-text-wrap font-extrabold tracking-[0.12em]" style={{ fontSize: layout.headerFont }}>REMITE</p>
+          <p className="label-text-wrap mt-1 font-semibold" style={{ fontSize: layout.senderNameFont }}>{label.sender.name}</p>
+          <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>{label.sender.address1}</p>
+          {label.sender.address2 && <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>{label.sender.address2}</p>}
+          <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>{label.sender.stateCountry}</p>
+          <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>{label.sender.phone}</p>
         </div>
-        <div>
-          <p className="text-[10px] font-extrabold tracking-[0.12em]">CONSIGNATARIO</p>
-          <p className="mt-1 text-[16px] font-bold leading-tight">{label.recipient.consignee || 'Nombre del destinatario'}</p>
-          <p className="text-[12px]">Atención: {label.recipient.attention || '---'}</p>
-          <p className="mt-1 text-[13px] leading-snug">{label.recipient.address || 'Dirección completa'}</p>
-          <p className="text-[13px]">{label.recipient.neighborhood || 'Colonia'} · {label.recipient.city || 'Ciudad'}</p>
-          <p className="text-[13px] font-semibold">C.P. {label.recipient.postalCode || '-----'}</p>
-          <p className="text-[13px]">Tel. {label.recipient.phone || '-----'}</p>
+        <div className="min-w-0">
+          <p className="label-text-wrap font-extrabold tracking-[0.12em]" style={{ fontSize: layout.headerFont }}>CONSIGNATARIO</p>
+          <p className="label-text-wrap mt-1 font-bold leading-tight" style={{ fontSize: layout.consigneeFont }}>
+            {label.recipient.consignee || 'Nombre del destinatario'}
+          </p>
+          <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>Atención: {label.recipient.attention || '---'}</p>
+          <p className="label-text-wrap mt-1 leading-snug" style={{ fontSize: layout.bodyFont }}>{label.recipient.address || 'Dirección completa'}</p>
+          <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>{label.recipient.neighborhood || 'Colonia'} · {label.recipient.city || 'Ciudad'}</p>
+          <p className="label-text-wrap font-semibold" style={{ fontSize: layout.bodyFont }}>C.P. {label.recipient.postalCode || '-----'}</p>
+          <p className="label-text-wrap" style={{ fontSize: layout.bodyFont }}>Tel. {label.recipient.phone || '-----'}</p>
         </div>
       </section>
-      <div className="mt-2 flex items-center justify-between text-[10px] text-slate-600">
+      <div className="mt-2 flex items-center justify-between text-slate-600" style={{ fontSize: layout.footerFont }}>
         <p>{formatLabel[label.format]}</p>
         <p>{new Date(label.createdAt).toLocaleString('es-MX')}</p>
       </div>
@@ -678,6 +704,7 @@ function LabelContent({ label, compact }: { label: LabelSnapshot; compact: boole
 
 function renderPrintHtml(label: LabelSnapshot) {
   const config = getPaperConfig(label.format)
+  const layout = getLabelLayout(label.format)
 
   return `<!doctype html>
 <html lang="es">
@@ -723,12 +750,13 @@ function renderPrintHtml(label: LabelSnapshot) {
       pointer-events: none;
     }
 
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-bottom: 1px solid #cbd5e1; padding-bottom: 10px; }
-    .h { font-size: 10px; font-weight: 800; letter-spacing: .12em; }
-    .n { margin-top: 4px; font-size: 16px; font-weight: 700; line-height: 1.15; }
-    .t12 { font-size: 12px; }
-    .t13 { font-size: 13px; }
-    .foot { margin-top: 8px; display: flex; justify-content: space-between; font-size: 10px; color: #475569; }
+    .row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: ${label.format === '4x6' ? '8px' : '12px'}; border-bottom: 1px solid #cbd5e1; padding-bottom: 10px; }
+    .cell { min-width: 0; }
+    .h { font-size: ${layout.headerFont}; font-weight: 800; letter-spacing: .12em; overflow-wrap: anywhere; }
+    .n { margin-top: 4px; font-size: ${layout.consigneeFont}; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
+    .t12 { font-size: ${layout.senderNameFont}; overflow-wrap: anywhere; }
+    .t13 { font-size: ${layout.bodyFont}; overflow-wrap: anywhere; }
+    .foot { margin-top: 8px; display: flex; justify-content: space-between; font-size: ${layout.footerFont}; color: #475569; }
 
     @media print {
       .print-btn { display: none; }
@@ -741,7 +769,7 @@ function renderPrintHtml(label: LabelSnapshot) {
     ${label.format !== '4x6' && label.showCutGuides ? '<div class="guides"></div>' : ''}
     <div class="sheet">
       <div class="row">
-        <div>
+        <div class="cell">
           <div class="h">REMITE</div>
           <div class="t12" style="margin-top: 4px; font-weight: 700;">${escapeHtml(label.sender.name)}</div>
           <div class="t12">${escapeHtml(label.sender.address1)}</div>
@@ -749,7 +777,7 @@ function renderPrintHtml(label: LabelSnapshot) {
           <div class="t12">${escapeHtml(label.sender.stateCountry)}</div>
           <div class="t12">${escapeHtml(label.sender.phone)}</div>
         </div>
-        <div>
+        <div class="cell">
           <div class="h">CONSIGNATARIO</div>
           <div class="n">${escapeHtml(label.recipient.consignee || 'Nombre del destinatario')}</div>
           <div class="t12">Atención: ${escapeHtml(label.recipient.attention || '---')}</div>
@@ -800,6 +828,7 @@ function drawPdfLabel(
   box: { originX: number; originY: number; width: number; height: number; padding: number },
   unit: 'in' | 'mm'
 ) {
+  const layout = getPdfLayout(label.format, unit)
   pdf.setDrawColor('#e2e8f0')
   pdf.rect(box.originX, box.originY, box.width, box.height)
 
@@ -808,36 +837,35 @@ function drawPdfLabel(
   const innerW = box.width - box.padding * 2
 
   const half = innerW / 2
-  const rightX = x + half + (unit === 'in' ? 0.08 : 2)
+  const columnGap = unit === 'in' ? 0.08 : 2
+  const leftMaxWidth = half - columnGap
+  const rightX = x + half + columnGap
+  const rightMaxWidth = half - columnGap
 
   pdf.setFont('helvetica', 'bold')
-  pdf.setFontSize(unit === 'in' ? 10 : 8)
+  pdf.setFontSize(layout.headerSize)
   pdf.text('REMITE', x, y)
   pdf.text('CONSIGNATARIO', rightX, y)
 
-  let leftY = y + (unit === 'in' ? 0.2 : 5)
+  let leftY = y + layout.firstLineOffset
   let rightY = leftY
 
-  pdf.setFontSize(unit === 'in' ? 11 : 9)
-  pdf.text(label.sender.name, x, leftY)
-  leftY += unit === 'in' ? 0.16 : 4
+  pdf.setFontSize(layout.senderNameSize)
+  leftY = drawWrapped(pdf, label.sender.name, x, leftY, leftMaxWidth, layout.lineHeightSender)
 
   pdf.setFont('helvetica', 'normal')
-  const senderLines = [label.sender.address1, label.sender.address2, label.sender.stateCountry, label.sender.phone].filter(Boolean)
+  pdf.setFontSize(layout.bodySize)
+  const senderLines = [label.sender.address1, label.sender.address2, label.sender.stateCountry, label.sender.phone].filter(Boolean) as string[]
   senderLines.forEach((line) => {
-    pdf.setFontSize(unit === 'in' ? 9 : 8)
-    pdf.text(String(line), x, leftY)
-    leftY += unit === 'in' ? 0.14 : 3.6
+    leftY = drawWrapped(pdf, line, x, leftY, leftMaxWidth, layout.lineHeightBody)
   })
 
   pdf.setFont('helvetica', 'bold')
-  pdf.setFontSize(unit === 'in' ? 15 : 12)
-  const consigneeLines = pdf.splitTextToSize(label.recipient.consignee, half - (unit === 'in' ? 0.1 : 2))
-  pdf.text(consigneeLines, rightX, rightY)
-  rightY += (consigneeLines.length + 0.5) * (unit === 'in' ? 0.13 : 3.3)
+  pdf.setFontSize(layout.consigneeSize)
+  rightY = drawWrapped(pdf, label.recipient.consignee, rightX, rightY, rightMaxWidth, layout.lineHeightConsignee)
 
   pdf.setFont('helvetica', 'normal')
-  pdf.setFontSize(unit === 'in' ? 9 : 8)
+  pdf.setFontSize(layout.bodySize)
   const recipientLines = [
     `Atención: ${label.recipient.attention}`,
     label.recipient.address,
@@ -847,10 +875,53 @@ function drawPdfLabel(
   ]
 
   recipientLines.forEach((line) => {
-    const lines = pdf.splitTextToSize(line, half - (unit === 'in' ? 0.1 : 2))
-    pdf.text(lines, rightX, rightY)
-    rightY += lines.length * (unit === 'in' ? 0.12 : 3.2)
+    rightY = drawWrapped(pdf, line, rightX, rightY, rightMaxWidth, layout.lineHeightBody)
   })
+}
+
+function drawWrapped(pdf: jsPDF, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
+  const lines = pdf.splitTextToSize(text || ' ', maxWidth)
+  pdf.text(lines, x, y)
+  return y + lines.length * lineHeight
+}
+
+function getLabelLayout(format: FormatType) {
+  if (format === '4x6') {
+    return {
+      padding: '0.16in',
+      gap: '0.12in',
+      headerFont: '9px',
+      senderNameFont: '11px',
+      consigneeFont: '15px',
+      bodyFont: '11px',
+      footerFont: '9px'
+    }
+  }
+
+  return {
+    padding: '0.24in',
+    gap: '0.16in',
+    headerFont: '10px',
+    senderNameFont: '12px',
+    consigneeFont: '17px',
+    bodyFont: '12px',
+    footerFont: '10px'
+  }
+}
+
+function getPdfLayout(format: FormatType, unit: 'in' | 'mm') {
+  const isInch = unit === 'in'
+  const isThermal = format === '4x6'
+  return {
+    headerSize: isInch ? (isThermal ? 9 : 10) : (isThermal ? 7 : 8),
+    senderNameSize: isInch ? (isThermal ? 10 : 11) : (isThermal ? 8 : 9),
+    consigneeSize: isInch ? (isThermal ? 13 : 15) : (isThermal ? 10 : 12),
+    bodySize: isInch ? (isThermal ? 8.8 : 9.4) : (isThermal ? 7.5 : 8),
+    firstLineOffset: isInch ? 0.2 : 5,
+    lineHeightSender: isInch ? (isThermal ? 0.14 : 0.16) : (isThermal ? 3.4 : 4),
+    lineHeightConsignee: isInch ? (isThermal ? 0.14 : 0.16) : (isThermal ? 3.4 : 4),
+    lineHeightBody: isInch ? (isThermal ? 0.12 : 0.13) : (isThermal ? 3 : 3.2)
+  }
 }
 
 function getPaperConfig(format: FormatType) {
