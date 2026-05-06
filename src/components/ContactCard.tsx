@@ -1,54 +1,54 @@
 export function ContactCard() {
   return (
-    <section id="contacto" className="py-16 md:py-24 px-4">
+    <section id="contacto" className="py-20 md:py-28 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Contact Info */}
+        <div className="grid md:grid-cols-2 gap-12">
+
+          {/* Contact info */}
           <div>
-            <h2 className="font-title text-3xl font-bold text-app-text mb-6">
+            <h2
+              className="font-serif text-soil mb-8 leading-[1.15]"
+              style={{ fontSize: '2.25rem' }}
+            >
               ¿Dónde nos encuentras?
             </h2>
             <div className="space-y-6">
               <div>
-                <p className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
-                  📍 Ubicación
+                <p className="text-xs font-medium uppercase tracking-widest text-soil-muted mb-1">
+                  Ubicación
                 </p>
-                <p className="text-lg text-app-text mt-1">
-                  Ejido Tres Ojitos
-                </p>
-                <p className="text-slate-700">
+                <p className="text-lg text-soil">Ejido Tres Ojitos</p>
+                <p className="text-soil-secondary">
                   Calle 12 y Avitia<br />
                   Cd. Madera, Chihuahua
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
-                  📞 Teléfono
+                <p className="text-xs font-medium uppercase tracking-widest text-soil-muted mb-1">
+                  Teléfono
                 </p>
                 <a
                   href="tel:+526521031451"
-                  className="text-lg text-app-primary hover:underline font-semibold"
+                  className="text-lg text-terracotta hover:text-terracotta-dark transition-colors duration-150 font-medium"
                 >
                   652 103 1451
                 </a>
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
-                  👤 Responsable
+                <p className="text-xs font-medium uppercase tracking-widest text-soil-muted mb-1">
+                  Responsable
                 </p>
-                <p className="text-lg text-app-text mt-1">
-                  Ing. Miguel Ángel de la Lama
-                </p>
+                <p className="text-lg text-soil">Ing. Miguel Ángel de la Lama</p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
-                  📱 Instagram
+                <p className="text-xs font-medium uppercase tracking-widest text-soil-muted mb-1">
+                  Instagram
                 </p>
                 <a
                   href="https://instagram.com/granjavillaalegre"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-lg text-app-primary hover:underline font-semibold"
+                  className="text-lg text-terracotta hover:text-terracotta-dark transition-colors duration-150 font-medium"
                 >
                   @granjavillaalegre
                 </a>
@@ -56,28 +56,30 @@ export function ContactCard() {
             </div>
           </div>
 
-          {/* CTA Section */}
+          {/* CTA */}
           <div className="flex flex-col justify-center">
-            <div className="rounded-2xl bg-gradient-to-br from-green-50 to-blue-50 border border-green-200 p-8">
-              <h3 className="font-title text-2xl font-bold text-app-text mb-3">
+            <div className="rounded-xl bg-oat-surface border border-oat-border p-8">
+              <h3 className="font-serif text-2xl text-soil mb-3 leading-snug">
                 ¿Quieres conocer nuestros productos?
               </h3>
-              <p className="text-slate-700 mb-6">
-                Contáctanos por WhatsApp para consultar disponibilidad de cremas artesanales, jabones naturales y más.
+              <p className="text-soil-secondary mb-6 leading-relaxed">
+                Contáctanos por WhatsApp para consultar disponibilidad de cremas
+                artesanales, jabones naturales y más.
               </p>
               <a
                 href="https://wa.me/526521031451"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary inline-block w-full text-center font-semibold"
+                className="btn-primary w-full"
               >
-                💬 Escríbenos por WhatsApp
+                Escríbenos por WhatsApp
               </a>
-              <p className="text-xs text-slate-600 text-center mt-4">
+              <p className="text-xs text-soil-muted text-center mt-4">
                 Respuesta rápida y amable garantizada
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </section>

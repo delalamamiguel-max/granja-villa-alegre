@@ -9,33 +9,42 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center px-4 py-16 bg-gradient-to-b from-slate-50 to-white overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-4 py-20 bg-oat-surface"
     >
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-10 left-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl" />
-        <div className="absolute top-40 right-10 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl" />
-      </div>
+      <div className="max-w-4xl mx-auto text-center">
+        {/* Eyebrow */}
+        <p className="text-xs font-medium uppercase tracking-widest text-soil-muted mb-8">
+          Misión Tres Ojitos · Chihuahua, México
+        </p>
 
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
-        <div className="mb-6 text-5xl md:text-6xl">🌾</div>
-
-        <h1 className="font-title text-4xl md:text-6xl font-bold text-app-text mb-4 leading-tight">
-          Granja Villa Alegre
+        {/* Headline — Instrument Serif, clamp 3–5rem, italic second line */}
+        <h1
+          className="font-serif text-soil mb-8 leading-[1.05]"
+          style={{ fontSize: 'clamp(3rem, 5vw + 1rem, 5rem)' }}
+        >
+          Granja{' '}
+          <span className="italic">Villa Alegre</span>
         </h1>
 
-        <p className="text-xl md:text-2xl text-slate-700 mb-6 leading-relaxed max-w-3xl mx-auto">
-          En Granja Villa Alegre, la tradición, la calidad y el amor por lo natural se encuentran en un mismo lugar. Una granja familiar en Misión Tres Ojitos, Chihuahua, dirigida por el Ing. Miguel Ángel de la Lama, donde cada producto nace del cuidado, la paciencia y la vida de campo.
+        {/* Supporting copy — "natural" underlined in honey for editorial accent */}
+        <p className="text-lg md:text-xl text-soil-secondary mb-5 leading-relaxed max-w-3xl mx-auto">
+          En Granja Villa Alegre, la tradición, la calidad y el amor por lo{' '}
+          <span className="border-b-2 border-honey">natural</span> se encuentran
+          en un mismo lugar. Una granja familiar en Misión Tres Ojitos, Chihuahua,
+          dirigida por el Ing. Miguel Ángel de la Lama, donde cada producto nace
+          del cuidado, la paciencia y la vida de campo.
         </p>
 
-        <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-          Productos 100% naturales, cremas artesanales, jabones medicinales y la calidez de una familia que ama lo que hace.
+        <p className="text-base text-soil-muted mb-12 max-w-2xl mx-auto">
+          Productos 100% naturales, cremas artesanales, jabones medicinales y la
+          calidez de una familia que ama lo que hace.
         </p>
 
+        {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={() => scrollToSection('productos')}
-            className="btn-primary text-base px-8 py-3 inline-block"
+            className="btn-primary text-base"
           >
             Conoce nuestros productos
           </button>
@@ -43,23 +52,17 @@ export function Hero() {
             href="https://wa.me/526521031451"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-secondary text-base px-8 py-3 inline-block"
+            className="btn-secondary text-base"
           >
             Escríbenos por WhatsApp
           </a>
         </div>
 
-        <div className="mt-12 text-sm text-slate-600">
-          <p className="mb-2">📍 Ejido Tres Ojitos, Cd. Madera, Chihuahua</p>
-          <p>📞 652 103 1451</p>
+        {/* Location + phone */}
+        <div className="mt-14 text-sm text-soil-muted space-y-1">
+          <p>Ejido Tres Ojitos, Cd. Madera, Chihuahua</p>
+          <p>652 103 1451</p>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
       </div>
     </section>
   );

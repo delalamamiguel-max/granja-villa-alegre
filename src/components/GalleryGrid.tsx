@@ -1,5 +1,5 @@
 export function GalleryGrid({
-  items
+  items,
 }: {
   items: Array<{
     id: string;
@@ -12,13 +12,19 @@ export function GalleryGrid({
       {items.map((item) => (
         <div
           key={item.id}
-          className="rounded-xl overflow-hidden shadow-soft hover:shadow-md transition group"
+          className="rounded-xl overflow-hidden border border-oat-border shadow-soft hover:shadow-card transition-shadow duration-200"
         >
-          <img
-            src={item.src}
-            alt={item.alt}
-            className="w-full h-64 object-cover group-hover:scale-105 transition duration-300"
-          />
+          {/* Placeholder — swap <img src={item.src} …> here when photos are ready */}
+          <div
+            className="w-full h-64 flex items-center justify-center px-6"
+            style={{
+              background: 'linear-gradient(135deg, var(--bg-surface), var(--border-subtle))',
+            }}
+          >
+            <span className="font-serif italic text-sm text-soil-muted text-center leading-snug">
+              {item.alt}
+            </span>
+          </div>
         </div>
       ))}
     </div>

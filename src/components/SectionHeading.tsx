@@ -1,20 +1,22 @@
 export function SectionHeading({
   title,
   subtitle,
-  emoji
+  emoji: _emoji, // accepted but not rendered — no decorative iconography
 }: {
   title: string;
   subtitle?: string;
   emoji?: string;
 }) {
   return (
-    <div className="mb-8 text-center md:mb-12">
-      {emoji && <span className="text-3xl md:text-4xl block mb-2">{emoji}</span>}
-      <h2 className="font-title text-3xl md:text-4xl font-bold text-app-text mb-2">
+    <div className="mb-10 md:mb-16 text-center">
+      <h2
+        className="font-serif text-soil leading-[1.15]"
+        style={{ fontSize: '2.25rem' }}
+      >
         {title}
       </h2>
       {subtitle && (
-        <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+        <p className="mt-4 text-base text-soil-secondary max-w-[65ch] mx-auto leading-relaxed">
           {subtitle}
         </p>
       )}

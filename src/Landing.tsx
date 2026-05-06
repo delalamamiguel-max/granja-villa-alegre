@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
 import { SectionHeading } from './components/SectionHeading';
@@ -7,6 +8,23 @@ import { GalleryGrid } from './components/GalleryGrid';
 import { ContactCard } from './components/ContactCard';
 
 export function Landing() {
+  // Scroll reveal — sections fade in 10px as they enter the viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('.section-reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   const creamProducts = [
     {
       name: 'Crema Regeneradora',
@@ -117,50 +135,62 @@ export function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-app-bg text-app-text">
+    <div className="min-h-screen bg-oat-base text-soil">
       <Navigation />
       <Hero />
 
-      {/* Nuestra Historia */}
-      <section id="historia" className="py-16 md:py-24 px-4 bg-white">
+      {/* ── Nuestra Historia ──────────────────────────────────────── */}
+      <section id="historia" className="py-20 md:py-28 px-4 bg-oat-base section-reveal">
         <div className="max-w-4xl mx-auto">
           <SectionHeading
             emoji="📖"
             title="Nuestra Historia"
             subtitle="Tradición, cuidado y amor por lo natural"
           />
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <p className="text-lg text-slate-700 leading-relaxed mb-4">
+              <p className="text-base text-soil-secondary leading-relaxed mb-4">
                 Granja Villa Alegre nace del sueño del Ing. Miguel Ángel de la Lama: crear un espacio donde la tradición y la naturaleza convergen en productos auténticos que cuiden la salud y el bienestar de la familia.
               </p>
-              <p className="text-lg text-slate-700 leading-relaxed mb-4">
+              <p className="text-base text-soil-secondary leading-relaxed mb-4">
                 Ubicada en Misión Tres Ojitos, Chihuahua, nuestra granja es un refugio de autenticidad donde cada producto es cuidadosamente elaborado con ingredientes naturales, sin compromisos y con el corazón.
               </p>
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-base text-soil-secondary leading-relaxed">
                 Desde cremas artesanales hasta jabones medicinales, desde huevos frescos hasta la convivencia diaria con nuestros animales de granja, todo en Granja Villa Alegre respira tradición, calidad y amor por lo natural.
               </p>
             </div>
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 border border-amber-200">
-              <h3 className="font-title text-2xl font-bold text-app-text mb-4">
+            <div className="bg-oat-elevated rounded-xl border border-oat-border p-8">
+              <h3 className="font-serif text-2xl text-soil mb-5">
                 ¿Qué nos hace especiales?
               </h3>
-              <ul className="space-y-3">
-                <li className="flex gap-3">
-                  <span className="text-xl">🌾</span>
-                  <span className="text-slate-700"><strong>Productos 100% naturales</strong> sin aditivos sintéticos</span>
+              <ul className="space-y-4">
+                <li className="flex gap-4 items-start">
+                  <span className="mt-2.5 w-4 h-px bg-terracotta shrink-0 block"></span>
+                  <span className="text-soil-secondary">
+                    <strong className="text-soil font-medium">Productos 100% naturales</strong>{' '}
+                    sin aditivos sintéticos
+                  </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-xl">👨‍🌾</span>
-                  <span className="text-slate-700"><strong>Elaboración artesanal</strong> con dedicación familiar</span>
+                <li className="flex gap-4 items-start">
+                  <span className="mt-2.5 w-4 h-px bg-terracotta shrink-0 block"></span>
+                  <span className="text-soil-secondary">
+                    <strong className="text-soil font-medium">Elaboración artesanal</strong>{' '}
+                    con dedicación familiar
+                  </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-xl">🐖</span>
-                  <span className="text-slate-700"><strong>Cerdo orgánico</strong> alimentado con los mejores cuidados</span>
+                <li className="flex gap-4 items-start">
+                  <span className="mt-2.5 w-4 h-px bg-terracotta shrink-0 block"></span>
+                  <span className="text-soil-secondary">
+                    <strong className="text-soil font-medium">Cerdo orgánico</strong>{' '}
+                    alimentado con los mejores cuidados
+                  </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-xl">💚</span>
-                  <span className="text-slate-700"><strong>Fórmulas tradicionales</strong> transmitidas con generaciones</span>
+                <li className="flex gap-4 items-start">
+                  <span className="mt-2.5 w-4 h-px bg-terracotta shrink-0 block"></span>
+                  <span className="text-soil-secondary">
+                    <strong className="text-soil font-medium">Fórmulas tradicionales</strong>{' '}
+                    transmitidas con generaciones
+                  </span>
                 </li>
               </ul>
             </div>
@@ -168,53 +198,46 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Vida en la Granja */}
-      <section id="vida" className="py-16 md:py-24 px-4 bg-slate-50">
+      {/* ── Vida en la Granja ─────────────────────────────────────── */}
+      {/* Reworked from 3-column identical cards into an editorial     */}
+      {/* stacked layout: animal name left, description right.        */}
+      <section id="vida" className="py-20 md:py-28 px-4 bg-oat-surface section-reveal">
         <div className="max-w-4xl mx-auto">
           <SectionHeading
             emoji="🐔"
             title="Vida en la Granja"
             subtitle="Autenticidad, naturaleza y cuidado diario"
           />
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <div className="rounded-2xl bg-white border border-app-border p-6 shadow-soft text-center">
-              <div className="text-4xl mb-3">🐔</div>
-              <h3 className="font-title text-lg font-bold text-app-text mb-2">
-                Gallinas
-              </h3>
-              <p className="text-slate-700">
+          <div className="divide-y divide-oat-border mb-10">
+            <div className="py-8 flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-12">
+              <h3 className="font-serif text-2xl text-soil sm:w-44 shrink-0">Gallinas</h3>
+              <p className="text-soil-secondary leading-relaxed">
                 Huevos frescos cada día, alimentadas con cuidado en un ambiente natural y tranquilo.
               </p>
             </div>
-            <div className="rounded-2xl bg-white border border-app-border p-6 shadow-soft text-center">
-              <div className="text-4xl mb-3">🦃</div>
-              <h3 className="font-title text-lg font-bold text-app-text mb-2">
-                Guajolotes
-              </h3>
-              <p className="text-slate-700">
+            <div className="py-8 flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-12">
+              <h3 className="font-serif text-2xl text-soil sm:w-44 shrink-0">Guajolotes</h3>
+              <p className="text-soil-secondary leading-relaxed">
                 Aves majestuosas que enriquecen la biodiversidad y el encanto de nuestra granja.
               </p>
             </div>
-            <div className="rounded-2xl bg-white border border-app-border p-6 shadow-soft text-center">
-              <div className="text-4xl mb-3">🦚</div>
-              <h3 className="font-title text-lg font-bold text-app-text mb-2">
-                Pavorreales
-              </h3>
-              <p className="text-slate-700">
+            <div className="py-8 flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-12">
+              <h3 className="font-serif text-2xl text-soil sm:w-44 shrink-0">Pavorreales</h3>
+              <p className="text-soil-secondary leading-relaxed">
                 Con su belleza incomparable, los pavorreales son la joya visual de Granja Villa Alegre.
               </p>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-app-border p-8">
-            <p className="text-lg text-slate-700 leading-relaxed text-center">
+          <div className="bg-oat-elevated rounded-xl border border-oat-border p-8">
+            <p className="text-base text-soil-secondary leading-relaxed text-center">
               En Granja Villa Alegre, cada día es una celebración de la vida de campo. Nuestros animales viven en libertad, alimentados naturalmente y cuidados con afecto. Esta conexión auténtica con la naturaleza es el corazón de todo lo que hacemos.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Cremas Naturales */}
-      <section id="productos" className="py-16 md:py-24 px-4 bg-white">
+      {/* ── Cremas Naturales ──────────────────────────────────────── */}
+      <section id="productos" className="py-20 md:py-28 px-4 bg-oat-base section-reveal">
         <div className="max-w-6xl mx-auto">
           <SectionHeading
             emoji="✨"
@@ -235,8 +258,8 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Jabones Naturales */}
-      <section className="py-16 md:py-24 px-4 bg-slate-50">
+      {/* ── Jabones Naturales ─────────────────────────────────────── */}
+      <section className="py-20 md:py-28 px-4 bg-oat-surface section-reveal">
         <div className="max-w-6xl mx-auto">
           <SectionHeading
             emoji="🧼"
@@ -245,11 +268,14 @@ export function Landing() {
           />
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {soapProducts.map((soap, idx) => (
-              <div key={idx} className="rounded-2xl border border-app-border bg-white p-6 shadow-soft hover:shadow-md transition">
-                <h3 className="font-title text-lg font-bold text-app-text mb-2">
+              <div
+                key={idx}
+                className="rounded-xl border border-oat-border bg-oat-elevated p-6 shadow-soft hover:shadow-card transition-shadow duration-200"
+              >
+                <h3 className="font-serif text-lg text-soil mb-2">
                   {soap.name}
                 </h3>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm text-soil-secondary leading-relaxed">
                   {soap.description}
                 </p>
               </div>
@@ -258,8 +284,8 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Animales de la Granja */}
-      <section className="py-16 md:py-24 px-4 bg-white">
+      {/* ── Animales de la Granja ─────────────────────────────────── */}
+      <section className="py-20 md:py-28 px-4 bg-oat-base section-reveal">
         <div className="max-w-6xl mx-auto">
           <SectionHeading
             emoji="🐴"
@@ -271,16 +297,16 @@ export function Landing() {
               <AnimalCard key={idx} {...animal} />
             ))}
           </div>
-          <div className="mt-12 bg-gradient-to-r from-blue-50 to-green-50 rounded-2xl border border-blue-200 p-8 text-center">
-            <p className="text-lg text-slate-700 leading-relaxed">
+          <div className="mt-12 bg-oat-elevated rounded-xl border border-oat-border p-8 text-center">
+            <p className="text-base text-soil-secondary leading-relaxed">
               Kenya, Canela, Sombra y Kelo son más que animales de granja; son parte de la familia. Su presencia, afecto y compañía hacen que cada día en Granja Villa Alegre sea especial y lleno de vida.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Galería */}
-      <section id="galeria" className="py-16 md:py-24 px-4 bg-slate-50">
+      {/* ── Galería ───────────────────────────────────────────────── */}
+      <section id="galeria" className="py-20 md:py-28 px-4 bg-oat-surface section-reveal">
         <div className="max-w-6xl mx-auto">
           <SectionHeading
             emoji="📸"
@@ -291,19 +317,15 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Contacto */}
-      <section className="bg-white">
+      {/* ── Contacto ──────────────────────────────────────────────── */}
+      <section className="bg-oat-base">
         <ContactCard />
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-app-border bg-slate-50 py-8 px-4 text-center text-sm text-slate-600">
-        <p>
-          Granja Villa Alegre © 2026 | Misión Tres Ojitos, Chihuahua, México
-        </p>
-        <p className="mt-2">
-          Hecho con amor 💚 por el Ing. Miguel Ángel de la Lama
-        </p>
+      {/* ── Footer ────────────────────────────────────────────────── */}
+      <footer className="border-t border-oat-border bg-oat-surface py-10 px-4 text-center text-sm text-soil-muted">
+        <p>Granja Villa Alegre © 2026 | Misión Tres Ojitos, Chihuahua, México</p>
+        <p className="mt-2">Hecho con amor 💚 por el Ing. Miguel Ángel de la Lama</p>
       </footer>
     </div>
   );

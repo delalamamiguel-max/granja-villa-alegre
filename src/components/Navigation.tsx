@@ -7,13 +7,13 @@ export function Navigation() {
   };
 
   return (
-    <nav className="sticky top-0 z-40 border-b border-app-border bg-white/95 backdrop-blur-sm shadow-sm">
+    <nav className="sticky top-0 z-40 border-b border-oat-border bg-oat-base">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
         <button
           onClick={() => scrollToSection('hero')}
-          className="font-title text-lg font-bold text-app-text hover:opacity-75 transition"
+          className="font-serif text-xl text-soil hover:opacity-70 transition-opacity duration-150"
         >
-          🌾 Granja Villa Alegre
+          Granja Villa Alegre
         </button>
         <div className="hidden md:flex gap-1">
           <NavLink onClick={() => scrollToSection('historia')}>Nuestra historia</NavLink>
@@ -37,7 +37,7 @@ function NavLink({ onClick, children }: { onClick: () => void; children: string 
   return (
     <button
       onClick={onClick}
-      className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-app-primary transition"
+      className="px-3 py-2 text-sm font-medium text-soil-secondary hover:text-soil hover:underline decoration-terracotta underline-offset-4 transition-colors duration-150"
     >
       {children}
     </button>
