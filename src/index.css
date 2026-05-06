@@ -18,15 +18,15 @@
   --text-secondary: #7A6655;
   --text-muted:     #A89684;
 
-  /* Accent — terracotta is the workhorse */
-  --accent-primary:       #B8654A;
-  --accent-primary-hover: #9E5239;
-  /* Accent — honey appears only in small doses */
-  --accent-secondary:     #C9974A;
+  /* Accent — cobalt blue (Talavera tiles / jar label) */
+  --accent-primary:       #3B5BDB;
+  --accent-primary-hover: #2F4AC2;
+  /* Accent — lighter blue for subtle highlights */
+  --accent-secondary:     #6B8CFF;
 
-  /* Borders */
-  --border-subtle: #D9CCB3;
-  --border-strong: #B8A88E;
+  /* Borders — blue-tinted hairlines */
+  --border-subtle: #D9E2FF;
+  --border-strong: #7A96E8;
 
   /* ── Legacy aliases kept for label-generator compatibility ── */
   --bg:      var(--bg-base);

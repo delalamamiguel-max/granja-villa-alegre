@@ -10,8 +10,8 @@ export default {
           base:    'var(--bg-base)',      // #F4ECDD — main page bg
           surface: 'var(--bg-surface)',   // #EAE0CC — cards, alternate sections
           elevated:'var(--bg-elevated)',  // #FBF6EC — hover, raised surfaces
-          border:  'var(--border-subtle)',// #D9CCB3 — hairline borders
-          stroke:  'var(--border-strong)',// #B8A88E — emphasis borders
+          border:  'var(--border-subtle)',// #D9E2FF — blue-tinted hairline
+          stroke:  'var(--border-strong)',// #7A96E8 — blue emphasis border
         },
         // ── Text palette ────────────────────────────────────────────
         soil: {
@@ -19,14 +19,14 @@ export default {
           secondary: 'var(--text-secondary)', // #7A6655 — body copy
           muted:     'var(--text-muted)',     // #A89684 — labels, captions
         },
-        // ── Accent: terracotta (primary CTA) ───────────────────────
+        // ── Accent: cobalt blue (Talavera tiles / jar label) ───────
         terracotta: {
-          DEFAULT: 'var(--accent-primary)',      // #B8654A
-          dark:    'var(--accent-primary-hover)',// #9E5239
+          DEFAULT: 'var(--accent-primary)',      // #3B5BDB
+          dark:    'var(--accent-primary-hover)',// #2F4AC2
         },
-        // ── Accent: honey (small highlights only) ──────────────────
+        // ── Accent: lighter blue (subtle highlights) ───────────────
         honey: {
-          DEFAULT: 'var(--accent-secondary)', // #C9974A
+          DEFAULT: 'var(--accent-secondary)', // #6B8CFF
         },
       },
       fontFamily: {
