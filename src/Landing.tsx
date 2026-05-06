@@ -7,7 +7,6 @@ import { AnimalCard } from './components/AnimalCard';
 import { GalleryGrid } from './components/GalleryGrid';
 import { ContactCard } from './components/ContactCard';
 
-// ── Photo paths — fill these in as files land in public/images/ ──
 const PHOTOS = {
   cremaRegeneradora: '/images/crema-regeneradora.jpg',
   caballoHero:       '/images/caballo-hero.jpg',
@@ -21,6 +20,7 @@ const PHOTOS = {
   elaboracionCrema:  '/images/elaboracion-crema.jpg',
   elaboracionJabon:  '/images/elaboracion-jabon.jpg',
   ventanaTalavera:   '/images/ventana-talavera.jpg',
+  fundador:          '/images/fundador.jpg',
 };
 
 export function Landing() {
@@ -194,7 +194,7 @@ export function Landing() {
             {/* Founder portrait slot — aspect 3:4 */}
             <div>
               <PhotoSlot
-                src={PHOTOS.ventanaTalavera}
+                src={PHOTOS.fundador}
                 alt="Ing. Miguel Ángel de la Lama"
                 aspectRatio="3 / 4"
               />
