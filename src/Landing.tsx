@@ -21,6 +21,9 @@ const PHOTOS = {
   elaboracionJabon:  '/images/elaboracion-jabon.jpg',
   ventanaTalavera:   '/images/ventana-talavera.jpg',
   fundador:          '/images/fundador.jpg',
+  canela:            '/images/canela.png',
+  kelo:              '/images/kelo.jpg',
+  hojita:            '/images/hojita.png',
 };
 
 export function Landing() {
@@ -117,9 +120,9 @@ export function Landing() {
 
   const animals = [
     { name: 'Kenya',  type: 'Yegua', emoji: '🐴', description: 'Una compañera elegante y noble que forma parte de la familia de Granja Villa Alegre.', photo: PHOTOS.caballoHero },
-    { name: 'Canela', type: 'Yegua', emoji: '🐴', description: 'Cálida y protectora, Canela representa el espíritu familial de nuestro rancho.' },
-    { name: 'Sombra', type: 'Husky', emoji: '🐕', description: 'Energético y leal, Sombra trae alegría y compañía a cada rincón de la granja.' },
-    { name: 'Kelo',   type: 'Husky', emoji: '🐕', description: 'Juguetón y afectuoso, Kelo es el corazón de la familia de Granja Villa Alegre.' },
+    { name: 'Canela', type: 'Potranca', emoji: '🐴', description: 'Cálida y curiosa, Canela crece libre en los campos de Granja Villa Alegre.', photo: PHOTOS.canela },
+    { name: 'Hojita', type: 'Husky', emoji: '🐕', description: 'Llena de energía y alegría, Hojita trae vida y movimiento a cada rincón de la granja.', photo: PHOTOS.hojita },
+    { name: 'Kelo',   type: 'Husky', emoji: '🐕', description: 'Leal y afectuoso, Kelo es el guardián y corazón de la familia de Granja Villa Alegre.', photo: PHOTOS.kelo },
   ];
 
   const galleryItems = [
@@ -335,16 +338,15 @@ export function Landing() {
               <AnimalCard key={idx} {...animal} />
             ))}
           </div>
-          {/* Piglet photo + ingredient tie-in */}
           <div className="mt-8 grid md:grid-cols-2 gap-6 items-center">
             <PhotoSlot
-              src={PHOTOS.cerdos}
-              alt="Cerdo orgánico de la granja"
+              src={PHOTOS.kelo}
+              alt="Kelo, Husky de la granja"
               aspectRatio="4 / 3"
             />
             <div className="bg-oat-elevated rounded-xl border border-oat-border p-8">
               <p className="text-base text-soil-secondary leading-relaxed">
-                Kenya, Canela, Sombra y Kelo son más que animales de granja; son parte de la familia.
+                Kenya, Canela, Hojita y Kelo son más que animales de granja; son parte de la familia.
               </p>
             </div>
           </div>
